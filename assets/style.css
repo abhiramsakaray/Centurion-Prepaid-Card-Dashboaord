@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 175px;
+    background-color: darkgreen;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar-logo {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.sidebar-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.sidebar-item {
+    padding: 10px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.sidebar-item:hover {
+    background-color: #0a4a0a;
+    border-radius: 5px;
+}
+
+.sidebar-item a {
+    text-decoration: none;  
+    color: white;       
+}
+
+.sidebar-item:hover a {
+    color: white; 
+}
+
+#main-content {
+    margin-left: 220px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+#main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.main-title {
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-align: center; 
+    color: rgb(8, 129, 6);
+}
+
+.dropdown-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+#card-container {
+    position: relative;
+    width: 400px;  
+    height: 250px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+}
+
+.card-text-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: flex-start;  
+    text-align: left;    
+    color: white;
+    width: 100%;
+    height: 100%; 
+    padding-left: 20px;
+}
+
+.card-number-text {
+    font-size: 40px; 
+    font-weight: bold;
+}
+
+.card-expiry-text {
+    font-size: 20px;  
+    margin-top: 10px; 
+}
