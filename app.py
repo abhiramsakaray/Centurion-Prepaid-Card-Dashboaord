@@ -4,6 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.graph_objs as go
+from dash import dash_table
 from flask import Flask
 
 server = Flask(__name__)
@@ -25,15 +26,7 @@ app.layout = html.Div([
             html.Ul(
                 children=[
                     html.Li(
-                        html.A("Home", href="/", className="sidebar-item"),
-                        className="sidebar-item"
-                    ),
-                    html.Li(
-                        html.A("Transactions", href="/transactions", className="sidebar-item"),
-                        className="sidebar-item"
-                    ),
-                    html.Li(
-                        html.A("Reports", href="/reports", className="sidebar-item"),
+                        html.A("Home", href="app.py", className="sidebar-item"),
                         className="sidebar-item"
                     ),
                 ],
@@ -41,7 +34,6 @@ app.layout = html.Div([
             )
         ]
     ),
-    # Main content
     html.Div(
         id="main-content",
         children=[
@@ -53,7 +45,7 @@ app.layout = html.Div([
                     {'label': row['student_erp'], 'value': row['card_number']} for index, row in students_df.iterrows()
                 ],
                 value=students_df['card_number'].iloc[0],
-                style={'width': '50%', 'margin-bottom': '20px'}
+                style={'width': '50%', 'margin-bottom': '20px', 'color': 'black'}
             ),
             html.Div(
                 id="card-container",
@@ -73,7 +65,28 @@ app.layout = html.Div([
             ),
             dcc.Graph(id='transaction-graph'),
             dcc.Graph(id='transaction-pie-chart'),
-            dcc.Graph(id='transaction-line-chart')
+            dcc.Graph(id='transaction-line-chart'),
+            html.H3("Transaction Details", style={'margin-top': '20px', 'text-align': 'left'}),
+            dash_table.DataTable(
+                id='transaction-table',
+                columns=[
+                    {'name': 'Transaction Date', 'id': 'transaction_date'},
+                    {'name': 'Transaction Type', 'id': 'transaction_type'},
+                    {'name': 'Amount', 'id': 'amount'}
+                ],
+                data=[],
+                style_table={'overflowX': 'auto', 'margin-top': '20px'},
+                style_cell={
+                    'textAlign': 'left',
+                    'padding': '10px',
+                    'whiteSpace': 'normal'
+                },
+                style_header={
+                    'backgroundColor': 'darkgreen',
+                    'fontWeight': 'bold',
+                    'color': 'white'
+                }
+            )
         ]
     )
 ])
@@ -83,19 +96,18 @@ app.layout = html.Div([
      Output('transaction-pie-chart', 'figure'),
      Output('transaction-line-chart', 'figure'),
      Output('card-number', 'children'),
-     Output('card-expiry', 'children')],
+     Output('card-expiry', 'children'),
+     Output('transaction-table', 'data')],
     [Input('student-dropdown', 'value')]
 )
 def update_graph_and_card(selected_card_number):
     filtered_df = transactions_df[transactions_df['card_number'] == selected_card_number]
-
     bar_figure = {
         'data': [
             {'x': filtered_df['transaction_date'], 'y': filtered_df['amount'], 'type': 'bar', 'name': 'Transactions'}
         ],
         'layout': {'title': f'Transaction Overview for Card: {selected_card_number}'}
     }
-
     spending_by_type = filtered_df.groupby('transaction_type')['amount'].sum().reset_index()
     pie_figure = {
         'data': [
@@ -108,7 +120,6 @@ def update_graph_and_card(selected_card_number):
         ],
         'layout': {'title': f'Spending Breakdown for Card: {selected_card_number}'}
     }
-
     filtered_df['transaction_date'] = pd.to_datetime(filtered_df['transaction_date'])
     daily_spending = filtered_df.groupby(filtered_df['transaction_date'].dt.date)['amount'].sum().reset_index()
     line_figure = {
@@ -130,7 +141,9 @@ def update_graph_and_card(selected_card_number):
     card_number_text = f"{selected_card_number}"
     expiry_date_text = "2028"
 
-    return bar_figure, pie_figure, line_figure, card_number_text, expiry_date_text
+    table_data = filtered_df.to_dict('records')
+
+    return bar_figure, pie_figure, line_figure, card_number_text, expiry_date_text, table_data
 
 if __name__ == "__main__":
     app.run_server(debug=True)
