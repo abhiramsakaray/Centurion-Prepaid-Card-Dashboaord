@@ -48,7 +48,7 @@ Project Structure
 Author Information
 Name: Abhiram Sakaray
 ERP No: 241801390012
-Email: 241801390012@gmail.com
+Email: 241801390012@cutmap.ac.in
 Course: First Semester DAVP (Python) Project
 This project serves as part of the Python programming course, designed to enhance practical experience with data handling, web development, and dashboard creation.
 
