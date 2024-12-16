@@ -20,8 +20,11 @@ Setup Instructions
 
 Clone the repository:
 
-git clone <repository_url>
-Install the required libraries: Ensure you have Python installed. Then install necessary libraries:
+git clone https://github.com/abhiramsakaray/Centurion-Prepaid-Card-Dashboaord.git
+
+Install the required libraries: Ensure you have Python installed. 
+
+Then install necessary libraries:
 
 pip install dash pandas openpyxl
 
